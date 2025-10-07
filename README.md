@@ -1,71 +1,156 @@
-# Sprint project 01
-> E-Commerce Data Pipeline
+# 🛍️ E-Commerce Data Pipeline (Sprint Project 01)
 
-Hi! this is the first of several projects we're going to be working on during this course.
+### 📚 Proyecto del Programa Anyone AI — Data Science & Machine Learning Track
 
-You will be expected to finish this on your own, but you can use the available channels on Discord to ask questions and help others. Please read the entire notebook before starting, this will give you a better idea of what you need to accomplish.
+Este proyecto tiene como objetivo construir un **pipeline de datos (ELT)** para analizar métricas clave de un **E-commerce** real (Olist Store, Brasil) durante los años **2016–2018**, enfocado principalmente en **Revenue** y **Delivery**.
 
-## The Business problem
+---
 
-You are working for one of the largest E-commerce sites in Latam and they requested the Data Science team to analyze company data to understand better their performance in specific metrics during the years 2016-2018.
+## 🧠 Descripción del problema
 
-They are two main areas they want to explore, those are **Revenue** and *Delivery*.
+La empresa de E-commerce desea comprender mejor su rendimiento histórico en dos áreas principales:
 
-Basically, they would like to understand how much revenue by year they got, which were the most and less popular product categories, and the revenue by state. On the other hand, it's also important to know how well the company is delivering the products sold in time and form to their users. For example, seeing how much takes to deliver a package depends on the month and the difference between the estimated delivery date and the real one.
+1. **Revenue (Ingresos)**
+   - Cuánto facturó por año.
+   - Cuáles fueron las categorías más y menos populares.
+   - Cómo se distribuyó el ingreso por estado.
 
-## About the data
+2. **Delivery (Entregas)**
+   - Cuánto tiempo tarda en entregar un pedido según el mes.
+   - Cuál es la diferencia entre la fecha estimada y la real de entrega.
+   - Cómo afectan los feriados nacionales al cumplimiento de entregas.
 
-You will consume and use data from two sources.
+El objetivo es crear una **tubería de datos automatizada** que permita obtener y actualizar estos reportes fácilmente, integrando datos de múltiples fuentes.
 
-The first one is a Brazilian e-commerce public dataset of orders made at the Olist Store, provided as CSVs files. This is real commercial data, that has been anonymized. The dataset has information on 100k orders from 2016 to 2018 made at multiple marketplaces in Brazil. Its features allow viewing orders from multiple dimensions: from order status, price, payment, and freight performance to customer location, product attributes and finally reviews written by customers. You will find an image showing the database schema at `images/data_schema.png`. To get the dataset please download it from this [link](https://drive.google.com/file/d/1HIy4LNNQESuXUj-u_mNJTCGCRrCeSbo-/view?usp=share_link), extract the `dataset` folder from the `.zip` file and place it into the root project folder. See `ASSIGNMENT.md`, section **Project Structure** to validate you've placed the dataset as it's needed.
+---
 
-The second source is a public API: https://date.nager.at. You will use it to retrieve information about Brazil's Public Holidays and correlate that with certain metrics about the delivery of products.
+## 🗂️ Fuentes de datos
 
-## Technical aspects
+### 1️⃣ Dataset Olist (CSV)
+Dataset público de **Olist Store**, con más de **100.000 pedidos** realizados en Brasil (2016–2018).  
+Incluye información sobre clientes, pedidos, productos, precios, pagos, envíos y reseñas.
 
-Because the team knows the data will come from different sources and formats, also, probably you will have to provide these kinds of reports on a monthly or annual basis. They decided to build a data pipeline (ELT) they can execute from time to time to produce the results.
+📦 **Estructura del dataset**  
+- `olist_customers_dataset.csv`  
+- `olist_orders_dataset.csv`  
+- `olist_order_items_dataset.csv`  
+- `olist_order_payments_dataset.csv`  
+- `olist_order_reviews_dataset.csv`  
+- `olist_products_dataset.csv`  
+- `olist_sellers_dataset.csv`  
+- `product_category_name_translation.csv`
 
-The technologies involved are:
-- Python as the main programming language
-- Pandas for consuming data from CSVs files
-- Requests for querying the public holidays API
-- SQLite as a database engine
-- SQL as the main language for storing, manipulating, and retrieving data in our Data Warehouse
-- Matplotlib and Seaborn for the visualizations
-- Jupyter notebooks to make the report an interactive way
+🗺️ Esquema de la base de datos disponible en:
 
-## Instalation
 
-A `requirements.txt` file is provided with all the needed Python libraries for running this project. For installing the dependencies just run:
+### 2️⃣ API de feriados públicos
+Se utiliza la API [Nager.Date](https://date.nager.at) para obtener los **feriados nacionales de Brasil** y correlacionarlos con las demoras en las entregas.
 
-```console
-$ pip install -r requirements.txt
-```
+---
 
-*Note:* We encourage you to install those inside a virtual environment.
+## ⚙️ Tecnologías utilizadas
 
-## Code Style
+| Herramienta | Propósito |
+|--------------|-----------|
+| 🐍 **Python** | Lenguaje principal |
+| 🧮 **Pandas** | Limpieza y transformación de datos (Extract & Load) |
+| 🌐 **Requests** | Consumo de la API pública de feriados |
+| 🗃️ **SQLite** | Almacenamiento y consultas en Data Warehouse |
+| 💾 **SQL** | Transformación y análisis de datos |
+| 📊 **Matplotlib / Seaborn** | Visualización de resultados |
+| 📓 **Jupyter Notebook** | Reporte interactivo |
+| ⚡ **Black** | Formato de código automático |
+| ✅ **Pytest** | Pruebas unitarias |
 
-Following a style guide keeps the code's aesthetics clean and improves readability, making contributions and code reviews easier. Automated Python code formatters make sure your codebase stays in a consistent style without any manual work on your end. If adhering to a specific style of coding is important to you, employing an automated to do that job is the obvious thing to do. This avoids bike-shedding on nitpicks during code reviews, saving you an enormous amount of time overall.
+---
 
-We use [Black](https://black.readthedocs.io/) for automated code formatting in this project, you can run it with:
+## 🏗️ Estructura del proyecto
 
-```console
-$ black --line-length=88 .
-```
+E-commerce-ELT-Pipeline/
+│
+├── data/ # CSVs del dataset Olist
+├── images/ # Diagramas y visualizaciones
+├── sql/ # Consultas SQL de transformación
+│ ├── revenue_by_month_year.sql
+│ ├── revenue_per_state.sql
+│ ├── delivery_date_difference.sql
+│ └── ...
+├── src/
+│ ├── extract.py # Extracción de datos CSV
+│ ├── load.py # Carga a SQLite
+│ └── transform.py # Consultas SQL + cálculos
+│
+├── notebooks/
+│ ├── report.ipynb # Visualizaciones e insights
+│
+├── tests/
+│ └── test_transform.py # Validación de queries
+│
+├── requirements.txt
+├── ASSIGNMENT.md
+├── README.md
+└── main.py # Script principal del pipeline
 
-Wanna read more about Python code style and good practices? Please see:
-- [The Hitchhiker’s Guide to Python: Code Style](https://docs.python-guide.org/writing/style/)
-- [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
 
-## Tests
+---
 
-We provide unit tests along with the project that you can run and check from your side the code meets the minimum requirements of correctness needed to approve. To run just execute:
+## 🚀 Instalación y ejecución
 
-```console
-$ pytest tests/
-```
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/NicoGigenaVaras/E-commerce-ELT-Pipeline.git
+   cd E-commerce-ELT-Pipeline
 
-If you want to learn more about testing Python code, please read:
-- [Effective Python Testing With Pytest](https://realpython.com/pytest-python-testing/)
-- [The Hitchhiker’s Guide to Python: Testing Your Code](https://docs.python-guide.org/writing/tests/)
+python -m venv venv
+source venv/bin/activate       # macOS/Linux
+venv\Scripts\activate          # Windows
+
+pip install -r requirements.txt
+
+python main.py
+
+black --line-length=88 .
+
+pytest tests/
+
+📈 Resultados esperados
+
+Reportes anuales y mensuales de revenue.
+
+Top 10 categorías más y menos rentables.
+
+Distribución de ingresos por estado.
+
+Análisis de tiempos de entrega vs fechas estimadas.
+
+Impacto de feriados en demoras logísticas.
+
+Las visualizaciones se generan en notebooks/report.ipynb e incluyen gráficos de barras, series temporales y mapas de calor.
+
+🧪 Testing
+
+El proyecto incluye pruebas unitarias con Pytest para validar la consistencia de los datos y los resultados de las consultas SQL.
+
+Ejemplo:
+
+pytest tests/test_transform.py -v
+
+Para más información:
+
+Effective Python Testing with Pytest
+
+Hitchhiker’s Guide to Python — Testing Your Code
+
+👨‍💻 Autor
+
+Nicolás Eduardo Gigena Varas
+💼 Software Developer @ Banco de Córdoba
+🎓 Data Science & Machine Learning Student @ Anyone AI
+🌐 GitHub
+ | LinkedIn
+ | 📧 nicogigenavaras@gmail.com
+
+📄 Licencia
+
+Este proyecto fue desarrollado con fines educativos como parte del programa Anyone AI Bootcamp.
+Puedes usarlo y modificarlo libremente citando la fuente original.
